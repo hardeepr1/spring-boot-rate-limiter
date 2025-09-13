@@ -1,0 +1,16 @@
+package com.hsingh.flowcap.repository;
+
+import com.hsingh.flowcap.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+import java.util.UUID;
+
+@Repository
+public interface AuthRepository extends JpaRepository<User, UUID> {
+
+    Boolean existsByEmailId(final String emailId);
+
+    Optional<User> findByEmailId(final String emailId);
+}
