@@ -1,5 +1,7 @@
 package com.hsingh.flowcap.algorithm;
 
+import com.hsingh.flowcap.configuration.FixedWindowProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -27,16 +29,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author Hardeep Singh Raike
  */
+@RequiredArgsConstructor
 @Component
 public class FixedWindowRateLimiter implements RateLimiter{
     private final Map<String, AtomicInteger> counters = new ConcurrentHashMap<>();
     private final Map<String, Long> windowStart = new ConcurrentHashMap<>();
 
-    @Value("${ratelimiter.fixedwindow.limit:100}") // default 100 if not set
-    private int limit;
-
-    @Value("${ratelimiter.fixedwindow.window-size-ms:60000}") // default 60000ms (1 min)
-    private long windowSizeMs;
+    private final FixedWindowProperties properties;
 
     @Override
     public String getName() { return "fixedwindow"; }
@@ -44,6 +43,9 @@ public class FixedWindowRateLimiter implements RateLimiter{
     @Override
     public boolean isAllowed(String key) {
         long now = System.currentTimeMillis();
+        int limit = properties.getLimit();
+        long windowSizeMs = properties.getWindowSizeMs();
+
         windowStart.putIfAbsent(key, now);
         counters.putIfAbsent(key, new AtomicInteger(0));
 
