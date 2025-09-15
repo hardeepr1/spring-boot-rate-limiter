@@ -1,7 +1,9 @@
 package com.hsingh.flowcap.controller;
 
 
-import com.hsingh.flowcap.dto.UserDto;
+import com.hsingh.flowcap.dto.LoginRequestDto;
+import com.hsingh.flowcap.dto.LoginResponseDto;
+import com.hsingh.flowcap.dto.UserCreateDto;
 import com.hsingh.flowcap.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    public ResponseEntity<HttpStatus> createUser(@Valid @RequestBody final UserDto user) {
-        authService.createUser(user);
+    public ResponseEntity<HttpStatus> createUser(@Valid @RequestBody final UserCreateDto userCreateRequest) {
+        authService.createUser(userCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    public ResponseEntity<LoginResponseDto> login(
+            @Valid @RequestBody final LoginRequestDto loginRequestDto) {
+        LoginResponseDto response = authService.login(loginRequestDto);
+        return ResponseEntity.ok(response);
     }
 }
