@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class AuthServiceImpl implements AuthService {
-    private AuthRepository authRepository;
-    private PasswordEncoder passwordEncoder;
+    private final AuthRepository authRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void createUser(UserCreateDto userCreateDto) {
@@ -27,7 +27,7 @@ public class AuthServiceImpl implements AuthService {
         }
         User user = new User();
         user.setEmailId(emailId);
-        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        String hashedPassword = passwordEncoder.encode(userCreateDto.getPassword());
         user.setPassword(hashedPassword);
         authRepository.save(user);
     }
