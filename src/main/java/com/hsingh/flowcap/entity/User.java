@@ -30,10 +30,13 @@ public class User {
     @Column(name="created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plan_id")
+    private Plan plan;
+
     @PrePersist
     void onCreate(){
         this.id = UUID.randomUUID();
         this.createdAt = LocalDateTime.now(ZoneOffset.UTC);
     }
-
 }
