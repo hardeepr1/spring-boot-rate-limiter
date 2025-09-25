@@ -23,3 +23,10 @@ ratelimiter:
   fixedwindow:
     limit: 200
     window-size-ms: 120000
+
+com:
+  hsingh:
+    flowcap:
+      token:
+        secret-key: M6vKp9WvUgE2O0bq7h+H2f1gAcf6s8vC3zG5v9Qx2n9Aq2W1pB6f2x8m4e7r5t0y/
+        validity: 120

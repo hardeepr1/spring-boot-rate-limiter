@@ -6,6 +6,7 @@ import com.hsingh.flowcap.entity.User;
 import com.hsingh.flowcap.exception.InvalidLoginCredentialsException;
 import com.hsingh.flowcap.repository.UserRepository;
 import com.hsingh.flowcap.service.AuthService;
+import com.hsingh.flowcap.utility.JwtUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtility jwtUtility;
 
     @Override
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
@@ -28,8 +30,8 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidLoginCredentialsException();
         }
 
-        //Todo: Add access token logic and classes
-        String accessToken = "mock_access_token";
+        String accessToken = jwtUtility.generateAccessToken(user.getId());
+
         return LoginResponseDto.builder().accessToken(accessToken).build();
     }
 }
